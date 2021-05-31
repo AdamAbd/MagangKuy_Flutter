@@ -36,7 +36,7 @@ class ApplicationProvider with ChangeNotifier {
         return [];
       }
     } catch (e) {
-      print('Apply Error: $e');
+      print('Apply 1 Error: $e');
       return [];
     }
   }
@@ -77,7 +77,7 @@ class ApplicationProvider with ChangeNotifier {
         return [];
       }
     } catch (e) {
-      print('Apply Error: $e');
+      print('Apply 2 Error: $e');
       return [];
     }
   }

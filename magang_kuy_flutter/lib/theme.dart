@@ -42,4 +42,4 @@ FontWeight bold = FontWeight.bold;
 
 // Note: Universal Url
 
-final String universalUrl = 'http://192.168.0.113:8000/';
+final String universalUrl = 'http://bwastore.masuk.id/magang-kuy/public/';

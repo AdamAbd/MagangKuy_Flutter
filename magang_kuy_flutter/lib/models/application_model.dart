@@ -37,8 +37,8 @@ class ApplicationModel {
   factory ApplicationModel.fromJson(Map<String, dynamic> json) =>
       ApplicationModel(
         id: json["id"],
-        userId: json["user_id"],
-        jobId: json["job_id"],
+        userId: int.parse(json["user_id"]),
+        jobId: int.parse(json["job_id"]),
         apply: json["apply"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
