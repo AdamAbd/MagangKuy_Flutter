@@ -11,6 +11,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController passwordController = TextEditingController(text: '');
   TextEditingController goalController = TextEditingController(text: '');
 
+  final formKey = GlobalKey<FormState>();
+  final contentPadding = EdgeInsets.only(left: 28.0, bottom: 20.0, top: 20.0);
+
   bool isLoading = false, obscureText = true;
 
   File image;
@@ -36,7 +39,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context);
     var userProvider = Provider.of<UserProvider>(context);
-    // var imageProvider = Provider.of<ImagesProvider>(context);
+
+    final node = FocusScope.of(context);
 
     void showError(String message) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -47,19 +51,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget header() {
       return Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: 30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Sign Up',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
+              style: greyTextStyle.copyWith(fontSize: 16.0),
             ),
-            SizedBox(
-              height: 2,
-            ),
+            SizedBox(height: 2.0),
             Text(
               'Begin New Journey',
               style: blackTextStyle.copyWith(
@@ -79,16 +79,16 @@ class _SignUpPageState extends State<SignUpPage> {
             await galleryImage();
           },
           child: Container(
-            width: 120,
-            height: 120,
-            margin: EdgeInsets.only(top: 50),
-            padding: EdgeInsets.all(8),
+            width: 120.0,
+            height: 120.0,
+            margin: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: primaryColor),
               image: DecorationImage(
                 image: image == null
-                    ? AssetImage('assets/image_profile.png')
+                    ? AssetImage('assets/icon_user.png')
                     : FileImage(image),
                 fit: BoxFit.cover,
               ),
@@ -100,44 +100,46 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget inputName() {
       return Container(
-        margin: EdgeInsets.only(top: 50),
+        margin: EdgeInsets.only(top: 50.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nick Name',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
+              'Username',
+              style: greyTextStyle.copyWith(fontSize: 16.0),
             ),
-            SizedBox(
-              height: 8,
-            ),
+            SizedBox(height: 8.0),
             TextFormField(
               controller: nameController,
               cursorColor: primaryColor,
               onChanged: (value) {
                 setState(() {});
               },
+              validator: MaxLengthValidator(
+                12,
+                errorText: 'Username cannot be more than 12 digits',
+              ),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 28, bottom: 20, top: 20),
+                contentPadding: contentPadding,
                 fillColor: Color(0xffF1F0F5),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
                     color: primaryColor,
                   ),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: '',
               ),
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(), // Move focus to next
               style: blueTextStyle,
             ),
           ],
@@ -147,19 +149,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget inputEmail() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Email Address',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
+              style: greyTextStyle.copyWith(fontSize: 16.0),
             ),
-            SizedBox(
-              height: 8,
-            ),
+            SizedBox(height: 8.0),
             TextFormField(
               controller: emailController,
               cursorColor: primaryColor,
@@ -167,30 +165,29 @@ class _SignUpPageState extends State<SignUpPage> {
               onChanged: (value) {
                 setState(() {});
               },
+              validator: EmailValidator(
+                errorText: 'Enter a valid email address',
+              ),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 28, bottom: 20, top: 20),
+                contentPadding: contentPadding,
                 fillColor: Color(0xffF1F0F5),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: email.EmailValidator.validate(emailController.text)
-                        ? primaryColor
-                        : Colors.red,
-                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: primaryColor),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: '',
               ),
-              style: email.EmailValidator.validate(emailController.text)
-                  ? blueTextStyle
-                  : redTextStyle,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(), // Move focus to next
+              style: blueTextStyle,
             ),
           ],
         ),
@@ -199,19 +196,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget inputPassword() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Password',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
+              style: greyTextStyle.copyWith(fontSize: 16.0),
             ),
-            SizedBox(
-              height: 8,
-            ),
+            SizedBox(height: 8.0),
             TextFormField(
               controller: passwordController,
               cursorColor: primaryColor,
@@ -219,7 +212,10 @@ class _SignUpPageState extends State<SignUpPage> {
               onChanged: (value) {
                 setState(() {});
               },
-              validator: MinLengthValidator(8, errorText: ''),
+              validator: MinLengthValidator(
+                8,
+                errorText: 'Password must be at least 8 digits long',
+              ),
               decoration: InputDecoration(
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -229,24 +225,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   onPressed: toggle,
                 ),
-                contentPadding: EdgeInsets.only(left: 28, bottom: 20, top: 20),
+                contentPadding: contentPadding,
                 fillColor: Color(0xffF1F0F5),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: primaryColor,
-                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: primaryColor),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: '',
               ),
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(), // Move focus to next
               style: blueTextStyle,
             ),
           ],
@@ -256,44 +252,43 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget inputGoal() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Your Goal',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
+              style: greyTextStyle.copyWith(fontSize: 16.0),
             ),
-            SizedBox(
-              height: 8,
-            ),
+            SizedBox(height: 8.0),
             TextFormField(
               controller: goalController,
               cursorColor: primaryColor,
               onChanged: (value) {
                 setState(() {});
               },
+              validator: RequiredValidator(errorText: 'Goal is required'),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 28, bottom: 20, top: 20),
+                contentPadding: contentPadding,
                 fillColor: Color(0xffF1F0F5),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
                     color: primaryColor,
                   ),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: '',
               ),
+              textInputAction: TextInputAction.done,
+              onEditingComplete: () => node.unfocus(), // Submit & hide keyboard
               style: blueTextStyle,
             ),
           ],
@@ -303,8 +298,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget signUpButton() {
       return Container(
-        margin: EdgeInsets.only(top: 40),
-        height: 45,
+        margin: EdgeInsets.only(top: 40.0),
+        height: 45.0,
         width: double.infinity,
         child: isLoading
             ? Center(child: CircularProgressIndicator())
@@ -335,7 +330,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
 
                     if (user == null) {
-                      showError('Email sudah terdaftar');
+                      showError('User already exists with this email');
                     } else {
                       userProvider.user = user;
                       userProvider.token = auth.accessToken;
@@ -347,7 +342,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextButton.styleFrom(
                   backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 child: Text(
@@ -363,7 +358,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget signInButton() {
       return Container(
-        margin: EdgeInsets.only(top: 20, bottom: 20),
+        margin: EdgeInsets.symmetric(vertical: 20.0),
         child: Center(
           child: TextButton(
             onPressed: () {
@@ -371,9 +366,7 @@ class _SignUpPageState extends State<SignUpPage> {
             },
             child: Text(
               'I Already Have An Account',
-              style: greyTextStyle.copyWith(
-                fontWeight: light,
-              ),
+              style: greyTextStyle.copyWith(fontWeight: light),
             ),
           ),
         ),
@@ -385,21 +378,23 @@ class _SignUpPageState extends State<SignUpPage> {
         child: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(
-              horizontal: defaultMargin,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                header(),
-                inputImage(),
-                inputName(),
-                inputEmail(),
-                inputPassword(),
-                inputGoal(),
-                signUpButton(),
-                signInButton(),
-              ],
+            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+            child: Form(
+              key: formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  header(),
+                  inputImage(),
+                  inputName(),
+                  inputEmail(),
+                  inputPassword(),
+                  inputGoal(),
+                  signUpButton(),
+                  signInButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -407,5 +402,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-// Note: {"id":"aZnoallj878usu3Fkqfn","name":"Adam Abdurrahman","email":"adam@adam.com","password":"1234567890","goal":"Menjadi orang yang merdeka"}
