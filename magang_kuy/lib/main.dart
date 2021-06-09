@@ -14,26 +14,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider<CategoryProvider>(
-        //   create: (context) => CategoryProvider(),
-        // ),
-        // ChangeNotifierProvider<JobProvider>(
-        //   create: (context) => JobProvider(),
-        // ),
-        // ChangeNotifierProvider<ApplicationProvider>(
-        //   create: (context) => ApplicationProvider(),
-        // ),
-        // ChangeNotifierProvider<ApplyProvider>(
-        //   create: (context) => ApplyProvider(),
-        // ),
         ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(),
         ),
         ChangeNotifierProvider<UserProvider>(
           create: (context) => UserProvider(),
         ),
-        ChangeNotifierProvider<ImagesProvider>(
-          create: (context) => ImagesProvider(),
+        ChangeNotifierProvider<CategoryProvider>(
+          create: (context) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider<JobProvider>(
+          create: (context) => JobProvider(),
+        ),
+        ChangeNotifierProvider<ApplicationProvider>(
+          create: (context) => ApplicationProvider(),
+        ),
+        ChangeNotifierProvider<ApplyProvider>(
+          create: (context) => ApplyProvider(),
         ),
       ],
       child: MaterialApp(
@@ -46,7 +43,7 @@ class MyApp extends StatelessWidget {
           '/onboarding': (context) => OnboardingPage(),
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
-          '/home': (context) => MyHomePage(),
+          '/home': (context) => BottomNavBar(),
         },
         home: OnboardingPage(),
       ),

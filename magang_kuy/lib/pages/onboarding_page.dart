@@ -42,29 +42,26 @@ class OnboardingPage extends StatelessWidget {
     }
 
     Widget button() {
-      return TextButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/sign-up');
-        },
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 11.0, horizontal: 8.0),
-          child: Container(
-            width: 125.0,
-            height: 25.0,
-            child: Text(
-              'Get Started',
-              style: whiteTextStyle.copyWith(
-                fontWeight: bold,
-                fontSize: 16.0,
-              ),
-              textAlign: TextAlign.center,
+      return Container(
+        width: 140.0,
+        height: 45.0,
+        child: TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/sign-up');
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
+          ),
+          child: Text(
+            'Get Started',
+            style: whiteTextStyle.copyWith(
+              fontWeight: bold,
+              fontSize: 16.0,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       );
